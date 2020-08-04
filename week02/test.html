@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+     <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+        <script>
+            let cnt=0;
+            function clickCount() {
+              cnt++;
+              if(cnt==5){
+                  alert("5번 했대요~!");
+              }
+            }
+
+            function numCheck() {
+            let number =  $("#number_check").val();
+            if(number%2 ==0){
+                alert('짝수!');
+            }
+            else{
+                alert('홀수!');
+            }
+            }
+
+            function greeting() {
+            $("#hello").text("반갑습니다!!");
+            }
+
+            function addText() {
+    $("#here").append("고기"
+
+
+    )
+            }
+
+            function addGogi() {
+            let html_text = " <li>고기</li>"
+            $("#gogi").append(html_text)
+            }
+
+            function removeAll() {
+                $("#total").html('');
+            }
+
+            function getAirSeoul() {
+            $.ajax({
+               type:"GET",
+                url:" http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99",
+                data:{},
+                success: function(response){
+                   let cityData = response['RealtimeCityAir']['row']
+                    for(let i=0;i<cityData.length;i++){
+                        let cityPart = cityData[i];
+                     let gu=   cityPart['MSRSTE_NM'];
+                     let appendHtml = "<li>"+gu+"</li>"
+                        $("#air_info").append(appendHtml);
+                    }
+                }
+            })
+            }
+        </script>
+</head>
+
+<body>
+<div id="total">
+<h2> 클릭을 5번 해보자</h2>
+<button   class="btn btn-info" onclick="clickCount()">클릭!</button>
+<hr>
+
+<h2> 짝수?홀수?</h2>
+<input type="number", id="number_check">
+<button class="btn btn-info" onclick="numCheck()">클릭!</button>
+
+<hr>
+
+<h3 id="hello">안녕하세요!!!</h3>
+<button class="btn btn-danger" onclick="greeting()"> 인사!</button>
+
+<hr>
+<h3>추가사기</h3>
+<div id="here">
+<hr>
+
+
+</div>
+<button class="btn btn-danger" onclick="addText()"> 추가</button>
+
+<h3> 고기 예쁘게 추가하기!</h3>
+<button class="btn btn-danger" onclick="addGogi()"> 추가</button>
+<ul id="gogi">
+    <li>고기</li>
+        </ul>
+
+<hr>
+<button class="btn btn-danger"  onclick="removeAll()">전체 지우기</button>
+
+<hr>
+    <button class="btn btn-info" onclick="getAirSeoul()"> 정보</button>
+    <ol id="air_info">
+        <h3>서울시 대기권 API정보!</h3>
+    </ol>
+
+</div>
+</body>
+</html>

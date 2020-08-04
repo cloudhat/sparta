@@ -1,0 +1,98 @@
+<!Doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Javascript + jQuery + Ajax 연습하기</title>
+    <!-- JQuery를 import 합니다 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+
+    <script>
+
+        function removeAll() {
+            $("#bike_seoul").html('');
+        }
+
+        function bikeInfo() {
+            // $("#bike_seoul").empty();
+            $("#bike_table").empty();
+            $.ajax({
+                type: "GET",
+                url: "http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/bikeList/1/99",
+                data: {},
+                success: function (response) {
+
+                    let myData = response['rentBikeStatus']['row']
+
+                    for (let i = 0; i < myData.length; i++) {
+                        let name = myData[i]['stationName']
+                        let totalcnt = myData[i]['rackTotCnt']
+                        let my_html = "<tr>" +
+                            "<td>" + name + "</td>" +
+                            "<td>" + totalcnt + "</td>" +
+                            "</tr>"
+                        $("#bike_table").append(my_html)
+                        // let name = myData[i]['stationName'] + "==" + myData[i]['rackTotCnt']
+                        // let my_html= "<Li>"+ name +"</Li>"
+                        // $("#bike_seoul").append(my_html)
+
+
+                    }
+
+                }
+            })
+        }
+
+
+        function getMyCat(){
+            $.ajax({
+                type:"GET",
+                url:"https://api.thecatapi.com/v1/images/search",
+                data:{},
+                success: function(response){
+                    let myurl = response[0]['url']
+                    $("#cat_img").attr("src",myurl)
+                }
+            })
+        }
+
+    </script>
+
+</head>
+
+
+<body>
+<button class="btn btn-info" onclick="bikeInfo()">조회!</button>
+<button class="btn btn-info" onclick="removeAll()">삭제!</button>
+<button class="btn btn-info" onclick="getMyCat()">고양이사진!</button>
+<div>
+    <img src="#" id="cat_img">
+</div>
+
+
+<div id="seoul_bike">
+    <ul id="bike_seoul">
+
+
+    </ul>
+
+    <table>
+        <thead>
+        <tr>
+            <td> 정거장 이름</td>
+            <td>거치대 수</td>
+        </tr>
+        </thead>
+
+        <tbody id="bike_table">
+
+        </tbody>
+    </table>
+</div>
+</body>
+
+</html>
